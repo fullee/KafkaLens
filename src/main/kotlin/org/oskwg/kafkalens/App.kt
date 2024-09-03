@@ -1,3 +1,5 @@
+package org.oskwg.kafkalens
+
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -147,7 +149,6 @@ fun App() {
 }
 
 fun sendMessage(props: Properties, message: String) {
-    Dispatchers.set
     KafkaProducer<String, String>(props).use { producer ->
         producer.send(ProducerRecord("first_topic", message, message))
     }

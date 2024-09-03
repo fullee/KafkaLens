@@ -1,7 +1,7 @@
+package org.oskwg.kafkalens
+
 import androidx.compose.runtime.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 
 sealed class CounterAction {
     object Increment : CounterAction()

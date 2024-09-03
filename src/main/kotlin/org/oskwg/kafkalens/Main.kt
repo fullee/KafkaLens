@@ -1,3 +1,5 @@
+package org.oskwg.kafkalens
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
@@ -14,9 +16,13 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.*
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
+import org.apache.kafka.clients.admin.AdminClient
+import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
+import org.koin.ksp.generated.module
+import org.oskwg.kafkalens.vm.Vm2Counter
 import vm.counter.VmCounter
 
 
@@ -29,6 +35,9 @@ object TrayIcon : Painter() {
 }
 
 fun main() = application {
+
+
+
     var isOpen by remember { mutableStateOf(true) }
 
     val trayState = rememberTrayState()
@@ -67,14 +76,26 @@ fun main() = application {
         title = "Kotlin Compose",
         icon = painterResource("kafka_logo--simple.png") /*undecorated = true*/
     ) {
+        KoinApplication(application = {
+            printLogger()
+            modules(KoinModule().module)
+        }) {
 
-        Surface(color = Color.Gray, modifier = Modifier.fillMaxSize().background(Color.Red)) {
-            /*App()*/
+            val client: AdminClient = koinInject()
+
+            // 打印主题名称
+            client.listTopics().names().get().forEach { println("主题名称： $it") }
+
+            Surface(color = Color.Gray, modifier = Modifier.fillMaxSize().background(Color.Red)) {
+                /*App()*/
 //            Counter(
 //                count = state.count, onIncrement = { channel.trySend(CounterAction.Increment) },
 //                onDecrement = { channel.trySend(CounterAction.Decrement)}
 //            )
-            VmCounter(vm = viewModel())
+//                VmCounter(vm = viewModel())
+                Vm2Counter()
+            }
+
         }
     }
 }

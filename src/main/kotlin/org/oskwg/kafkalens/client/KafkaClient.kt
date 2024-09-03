@@ -1,12 +1,19 @@
+package org.oskwg.kafkalens.client
+
+import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.KafkaAdminClient
 import org.apache.kafka.common.config.SaslConfigs
+import org.koin.core.annotation.Single
 import java.util.*
 
+//@Single
 class KafkaClient() {
-    fun configure(): Properties {
+
+    private var client: AdminClient? = null
+
+    init {
         val username = "ZmFpdGhmdWwtaG9uZXliZWUtMTA5NTgkRRCktSbSc85odqixDJroDDQIz95f-co"
         val password = "MjlhMWMxZjAtZTcyOC00MDI2LWE0NzUtNWQ4NDVkOTgxZmE3"
-
         val props = Properties()
         props["bootstrap.servers"] = "https://faithful-honeybee-10958-us1-kafka.upstash.io:9092"
         props["sasl.mechanism"] = "SCRAM-SHA-256"
@@ -21,13 +28,7 @@ class KafkaClient() {
         props["value.serializer"] = "org.apache.kafka.common.serialization.StringSerializer"
         props["key.deserializer"] = "org.apache.kafka.common.serialization.StringDeserializer"
         props["value.deserializer"] = "org.apache.kafka.common.serialization.StringDeserializer"
-
-        return props
-    }
-
-    init {
-        val properties = configure()
-        val client = KafkaAdminClient.create(properties)
+        client = KafkaAdminClient.create(props)
     }
 
 }

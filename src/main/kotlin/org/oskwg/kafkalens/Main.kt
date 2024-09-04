@@ -15,15 +15,14 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
 import org.apache.kafka.clients.admin.AdminClient
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import org.koin.ksp.generated.module
+import org.oskwg.kafkalens.di.KoinModule
 import org.oskwg.kafkalens.vm.Vm2Counter
-import vm.counter.VmCounter
 
 
 object TrayIcon : Painter() {
@@ -35,7 +34,6 @@ object TrayIcon : Painter() {
 }
 
 fun main() = application {
-
 
 
     var isOpen by remember { mutableStateOf(true) }
@@ -73,7 +71,7 @@ fun main() = application {
     val state = CounterPresenter(flow)
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Kotlin Compose",
+        title = "KafkaLens",
         icon = painterResource("kafka_logo--simple.png") /*undecorated = true*/
     ) {
         KoinApplication(application = {

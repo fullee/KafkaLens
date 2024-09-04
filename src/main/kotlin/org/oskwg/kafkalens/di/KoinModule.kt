@@ -1,17 +1,26 @@
-package org.oskwg.kafkalens.client
+package org.oskwg.kafkalens.di
 
+import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.KafkaAdminClient
 import org.apache.kafka.common.config.SaslConfigs
-import org.koin.core.annotation.Single
+import org.koin.core.annotation.*
 import java.util.*
 
-//@Single
-class KafkaClient() {
+@Module
+@ComponentScan("org.oskwg.kafkalens.vm")
+class KoinModule {
 
-    private var client: AdminClient? = null
+    @Single
+    fun kafkaClient(@Named("kafkaProperties") props: Properties): AdminClient {
+        props.forEach { println(it) }
+        return KafkaAdminClient.create(props)
+    }
 
-    init {
+    @Factory
+    @Named("kafkaProperties")
+    fun kafkaProperties(): Properties {
+
         val username = "ZmFpdGhmdWwtaG9uZXliZWUtMTA5NTgkRRCktSbSc85odqixDJroDDQIz95f-co"
         val password = "MjlhMWMxZjAtZTcyOC00MDI2LWE0NzUtNWQ4NDVkOTgxZmE3"
         val props = Properties()
@@ -28,7 +37,6 @@ class KafkaClient() {
         props["value.serializer"] = "org.apache.kafka.common.serialization.StringSerializer"
         props["key.deserializer"] = "org.apache.kafka.common.serialization.StringDeserializer"
         props["value.deserializer"] = "org.apache.kafka.common.serialization.StringDeserializer"
-        client = KafkaAdminClient.create(props)
+        return props;
     }
-
 }

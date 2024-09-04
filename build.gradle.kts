@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     kotlin("jvm").version("2.0.20")
@@ -27,6 +26,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.8.1")
     implementation("org.apache.kafka:kafka-clients:3.8.0")
     implementation("org.apache.kafka:kafka-streams:3.8.0")
     implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
@@ -44,6 +44,15 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "demo1"
             packageVersion = "1.0.0"
+            modules("java.management", "java.security.jgss")
+        }
+
+        buildTypes {
+            release {
+                proguard {
+                    configurationFiles.from("proguard-rules.pro")
+                }
+            }
         }
     }
 }

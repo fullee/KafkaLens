@@ -43,3 +43,6 @@ bin/
 
 
 ./.kotlin
+.idea
+.kotlin
+test.db

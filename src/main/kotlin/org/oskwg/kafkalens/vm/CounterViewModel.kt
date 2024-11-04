@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import org.apache.kafka.clients.admin.AdminClient
 import org.koin.core.annotation.Single
 
-@Single
+//@Single
 class CounterViewModel(private val kafkaClient: AdminClient) : ViewModel() {
     private val _counter = MutableStateFlow(0)
 
